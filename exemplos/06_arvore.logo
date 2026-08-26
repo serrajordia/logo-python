@@ -1,0 +1,28 @@
+; Exemplo avancado: uma arvore fractal usando RECURSAO
+; (um procedimento que chama a si mesmo!).
+;
+; Matematica: a cada chamada o galho fica 0.7x menor (uma multiplicacao
+; por uma fracao). O SE :TAMANHO < 10 e a "condicao de parada":
+; sem ela, a arvore chamaria a si mesma para sempre!
+
+PARA ARVORE :TAMANHO
+  SE :TAMANHO < 10 [
+    SAIA
+  ]
+  PF :TAMANHO
+  PD 25
+  ARVORE :TAMANHO * 0.7
+  PE 50
+  ARVORE :TAMANHO * 0.7
+  PD 25
+  PT :TAMANHO
+FIM
+
+COR "marrom
+ESPESSURA 2
+VELOCIDADE 0
+LP
+VAIPARA 0 -250
+AP
+DEFINARUMO 0
+ARVORE 100

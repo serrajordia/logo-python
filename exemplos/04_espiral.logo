@@ -1,0 +1,10 @@
+; REPCOUNT e o numero da volta atual dentro de um REPITA (1, 2, 3, ...).
+; Aqui usamos ele para fazer cada lado um pouco maior que o anterior:
+; e assim que vira uma espiral!
+
+COR "azul
+VELOCIDADE 0
+REPITA 90 [
+  PF REPCOUNT * 2
+  PD 91
+]

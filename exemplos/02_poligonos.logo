@@ -1,0 +1,29 @@
+; Um PROCEDIMENTO que desenha qualquer poligono regular.
+; :LADOS  = quantos lados o poligono tem
+; :TAMANHO = o comprimento de cada lado
+;
+; Matematica: em qualquer poligono regular, a soma dos angulos externos
+; e sempre 360 graus. Por isso o angulo de giro e sempre 360 / :LADOS.
+
+PARA POLIGONO :LADOS :TAMANHO
+  REPITA :LADOS [
+    PF :TAMANHO
+    PD 360 / :LADOS
+  ]
+FIM
+
+COR "vermelho
+VAIPARA -250 0
+POLIGONO 3 80          ; triangulo
+
+COR "laranja
+VAIPARA -100 0
+POLIGONO 4 80           ; quadrado
+
+COR "verde
+VAIPARA 80 0
+POLIGONO 5 80            ; pentagono
+
+COR "azul
+VAIPARA 250 0
+POLIGONO 8 60             ; octogono

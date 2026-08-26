@@ -1,0 +1,13 @@
+; Estrela: parecido com o poligono, mas girando o DOBRO do angulo.
+; Isso faz a linha "pular" uma ponta e cruzar por dentro, formando a estrela.
+
+PARA ESTRELA :PONTAS :TAMANHO
+  REPITA :PONTAS [
+    PF :TAMANHO
+    PD 360 * 2 / :PONTAS
+  ]
+FIM
+
+COR "roxo
+ESPESSURA 2
+ESTRELA 5 150

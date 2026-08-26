@@ -1,0 +1,8 @@
+; Desenha um quadrado com lado 100
+; Matematica: um quadrado tem 4 lados iguais e 4 angulos de 90 graus.
+; A tartaruga gira 90 graus (para fora) em cada canto -> 4 x 90 = 360 (uma volta completa)
+
+REPITA 4 [
+  PF 100
+  PD 90
+]

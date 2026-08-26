@@ -1,0 +1,27 @@
+; Desenha um grafico de barras da tabuada de um numero, e tambem
+; escreve os resultados no console com MOSTRE.
+;
+; Matematica: cada barra representa REPCOUNT x :FATOR, ou seja,
+; 1x7, 2x7, 3x7 ... ate 10x7. Da pra "ver" a tabuada crescendo!
+
+PARA BARRA :ALTURA
+  PD 90
+  PF :ALTURA
+  PT :ALTURA
+  PE 90
+  PF 20
+FIM
+
+PARA TABUADA :FATOR
+  LP
+  VAIPARA -180 -120
+  AP
+  DEFINARUMO 0
+  REPITA 10 [
+    MOSTRE REPCOUNT * :FATOR
+    BARRA REPCOUNT * :FATOR
+  ]
+FIM
+
+COR "verde
+TABUADA 7

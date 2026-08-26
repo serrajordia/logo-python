@@ -1,0 +1,20 @@
+; 5 circulos concentricos (mesmo centro), cada um com metade do raio
+; do anterior - combina RAIZ/PI, uma VARIAVEL que muda a cada volta
+; do REPITA, e RAPIDO para nao demorar (sao 5 x 360 passos!).
+
+RAPIDO
+
+PARA CIRCULO :RAIO
+  REPITA 360 [
+    PF 2 * PI * :RAIO / 360
+    PD 1
+  ]
+FIM
+
+FACA "raio 100
+REPITA 5 [
+  CIRCULO :raio
+  FACA "raio :raio / 2
+]
+
+NORMAL

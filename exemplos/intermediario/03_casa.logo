@@ -1,0 +1,27 @@
+; Planejamento: um desenho complicado (uma casa) fica facil quando
+; quebramos ele em pedacos menores - aqui, um QUADRADO reaproveitado
+; e um telhado triangular.
+
+PARA QUADRADO :LADO
+  REPITA 4 [ PF :LADO PD 90 ]
+FIM
+
+PARA CASA :LADO
+  COR "marrom
+  QUADRADO :LADO
+
+  ; anda ate o canto superior esquerdo, sem desenhar, para comecar o telhado
+  LP
+  PF :LADO
+  PD 90
+  AP
+
+  ; o telhado e um triangulo equilatero encaixado bem no topo do quadrado
+  COR "vermelho
+  PE 60
+  PF :LADO
+  PD 120
+  PF :LADO
+FIM
+
+CASA 120

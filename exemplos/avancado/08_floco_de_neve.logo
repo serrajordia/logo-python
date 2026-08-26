@@ -1,0 +1,31 @@
+; O floco de neve de Koch: um dos fractais mais famosos da matematica.
+; A regra e recursiva: para desenhar um "lado Koch" de nivel N, desenhe
+; 4 lados de nivel N-1 (um tercinho do tamanho cada), virando
+; esquerda-direita-esquerda entre eles. No nivel 0, e so uma linha reta.
+;
+; O floco comeca como um triangulo (REPITA 3), e cada lado do triangulo
+; vira uma curva de Koch.
+
+PARA KOCH :TAMANHO :NIVEL
+  SE :NIVEL = 0 [
+    PF :TAMANHO
+    SAIA
+  ]
+  KOCH (:TAMANHO / 3) (:NIVEL - 1)
+  PE 60
+  KOCH (:TAMANHO / 3) (:NIVEL - 1)
+  PD 120
+  KOCH (:TAMANHO / 3) (:NIVEL - 1)
+  PE 60
+  KOCH (:TAMANHO / 3) (:NIVEL - 1)
+FIM
+
+RAPIDO
+COR "azul
+VAIPARA -150 -100
+AP
+REPITA 3 [
+  KOCH 300 3
+  PD 120
+]
+NORMAL

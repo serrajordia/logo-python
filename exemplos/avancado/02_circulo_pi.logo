@@ -1,0 +1,12 @@
+; Um circulo e um poligono regular com MUITOS lados bem pequenos.
+; circunferencia = 2 * PI * raio  (formula da geometria)
+
+PARA CIRCULO :RAIO
+  REPITA 360 [
+    PF 2 * PI * :RAIO / 360
+    PD 1
+  ]
+FIM
+
+COR "azul
+CIRCULO 100

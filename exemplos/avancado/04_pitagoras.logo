@@ -1,0 +1,31 @@
+; DEVOLVA transforma um procedimento em uma FUNCAO: ele "devolve" um
+; valor que pode ser usado em contas, em vez de so desenhar algo.
+;
+; DISTANCIA usa o Teorema de Pitagoras: a distancia entre dois pontos
+; (x1,y1) e (x2,y2) e RAIZ((x2-x1)^2 + (y2-y1)^2).
+
+PARA DISTANCIA :X1 :Y1 :X2 :Y2
+  DEVOLVA RAIZ ((:X2 - :X1) * (:X2 - :X1) + (:Y2 - :Y1) * (:Y2 - :Y1))
+FIM
+
+; o classico triangulo 3-4-5: a hipotenusa deve dar exatamente 5
+MOSTRE DISTANCIA 0 0 3 4
+; outro triangulo pitagorico famoso: 5-12-13
+MOSTRE DISTANCIA 0 0 5 12
+
+; agora desenhamos um triangulo retangulo de catetos 120 e 160
+; (3 e 4 vezes 40) e conferimos que a hipotenusa mede 200 (5 vezes 40)
+COR "azul
+LP
+VAIPARA -160 -100
+AP
+DEFINARUMO 0
+PF 120
+DEFINARUMO 90
+PF 160
+
+COR "vermelho
+VAIPARA -160 -100          ; com a caneta abaixada, isto desenha a hipotenusa
+
+MOSTRE [A hipotenusa mede:]
+MOSTRE DISTANCIA -160 -100 -40 60

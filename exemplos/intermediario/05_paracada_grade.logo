@@ -1,0 +1,19 @@
+; PARACADA e um "for" com uma variavel de verdade (nao so o REPCOUNT).
+; Aqui usamos DOIS PARACADA, um dentro do outro, para desenhar uma
+; grade de quadradinhos - uma ideia central em programacao: repetir
+; em duas dimensoes (linhas e colunas), como um tabuleiro.
+
+PARA QUADRADINHO :LADO
+  REPITA 4 [ PF :LADO PD 90 ]
+FIM
+
+COR "azul
+LP
+PARACADA :linha DE 0 ATE 4 [
+  PARACADA :coluna DE 0 ATE 4 [
+    VAIPARA (:coluna * 40 - 100) (:linha * 40 - 100)
+    AP
+    QUADRADINHO 30
+    LP
+  ]
+]

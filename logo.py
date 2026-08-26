@@ -28,6 +28,22 @@ class StopProc(Exception):
     """Levantado por SAIA/STOP para sair de um procedimento antes do fim."""
 
 
+class ProcOutput(Exception):
+    """Levantado por DEVOLVA/OUTPUT para sair de um procedimento com um valor."""
+
+    def __init__(self, valor):
+        super().__init__()
+        self.valor = valor
+
+
+class BreakLoop(Exception):
+    """Levantado por QUEBRA/BREAK para sair do laco mais interno."""
+
+
+class ContinueLoop(Exception):
+    """Levantado por CONTINUA/CONTINUE para pular para a proxima volta do laco."""
+
+
 class StopProgram(Exception):
     """Levantado por PARE para interromper todo o programa."""
 
@@ -46,6 +62,7 @@ TOKEN_RE = re.compile(r'''
     | [A-Za-z_][A-Za-z0-9_]*
     | \d+\.\d+
     | \d+
+    | [,.!?:;]
 ''', re.VERBOSE)
 
 
@@ -92,6 +109,11 @@ class TokenStream:
         tok = self.next()
         if tok != value:
             raise LogoError(f"esperava '{value}' mas encontrei '{tok}'")
+
+    def expect_word(self, palavra):
+        tok = self.next()
+        if tok.upper() != palavra:
+            raise LogoError(f"esperava '{palavra}' mas encontrei '{tok}'")
 
     def read_bracket_block(self):
         self.expect('[')
@@ -155,6 +177,8 @@ class Interpreter:
         self.procs = {}          # nome -> (params, corpo_de_tokens)
         self.scopes = [{}]       # pilha de escopos de variaveis; scopes[0] = global
         self.repcount_stack = []
+        self.loop_depth = 0      # > 0 enquanto executamos dentro de REPITA/ENQUANTO/PARACADA
+        self.proc_depth = 0      # > 0 enquanto executamos dentro de um procedimento (PARA/FIM)
 
     # -- variaveis ----------------------------------------------------------
 
@@ -233,6 +257,14 @@ class Interpreter:
             return float(tok)
         if re.match(r'^\d+$', tok):
             return int(tok)
+        if tok.upper() in self.procs:
+            valor = self.run_proc(tok.upper(), stream)
+            if valor is None:
+                raise LogoError(
+                    f"o procedimento {tok} nao devolveu um valor "
+                    f"(use DEVOLVA dentro dele para ele funcionar como funcao)"
+                )
+            return valor
         raise LogoError(f"esperava um numero, encontrei '{tok}'")
 
     def eval_condition(self, stream):
@@ -304,9 +336,13 @@ class Interpreter:
         elif up in ('COR', 'SETCOLOR', 'COLOR'):
             self.cmd_cor(stream)
         elif up in ('MOSTRE', 'PRINT', 'SHOW'):
-            print(self.fmt(self.eval_expr(stream)))
+            self.cmd_mostre(stream)
         elif up in ('REPITA', 'REPEAT'):
             self.cmd_repita(stream)
+        elif up in ('ENQUANTO', 'WHILE'):
+            self.cmd_enquanto(stream)
+        elif up in ('PARACADA', 'FOR'):
+            self.cmd_paracada(stream)
         elif up in ('PARA', 'TO'):
             self.cmd_para(stream)
         elif up in ('SE', 'IF'):
@@ -314,15 +350,48 @@ class Interpreter:
         elif up in ('FACA', 'MAKE'):
             self.cmd_faca(stream)
         elif up in ('SAIA', 'STOP'):
+            if self.proc_depth == 0:
+                raise LogoError("SAIA so pode ser usado dentro de um procedimento (PARA ... FIM)")
             raise StopProc()
+        elif up in ('DEVOLVA', 'RETORNE', 'OUTPUT'):
+            if self.proc_depth == 0:
+                raise LogoError("DEVOLVA so pode ser usado dentro de um procedimento (PARA ... FIM)")
+            raise ProcOutput(self.eval_expr(stream))
+        elif up in ('QUEBRA', 'BREAK'):
+            if self.loop_depth == 0:
+                raise LogoError("QUEBRA so pode ser usado dentro de um REPITA/ENQUANTO/PARACADA")
+            raise BreakLoop()
+        elif up in ('CONTINUA', 'CONTINUE'):
+            if self.loop_depth == 0:
+                raise LogoError("CONTINUA so pode ser usado dentro de um REPITA/ENQUANTO/PARACADA")
+            raise ContinueLoop()
         elif up == 'PARE':
             raise StopProgram()
         elif up in ('FIM', 'END'):
             raise LogoError("'FIM' sem um 'PARA' correspondente")
         elif up in self.procs:
-            self.call_proc(up, stream)
+            self.run_proc(up, stream)
         else:
             raise LogoError(f"nao conheco o comando '{tok}'")
+
+    def cmd_mostre(self, stream):
+        tok = stream.peek()
+        if tok == '[':
+            palavras = stream.read_bracket_block()
+            partes = []
+            for p in palavras:
+                pedaco = p[1:] if p.startswith('"') else p
+                if pedaco in (',', '.', '!', '?', ':', ';') and partes:
+                    partes[-1] += pedaco
+                else:
+                    partes.append(pedaco)
+            print(' '.join(partes))
+            return
+        if tok is not None and tok.startswith('"'):
+            stream.next()
+            print(tok[1:])
+            return
+        print(self.fmt(self.eval_expr(stream)))
 
     def cmd_zoom(self, fator):
         if fator <= 0:
@@ -352,12 +421,80 @@ class Interpreter:
         count = self.eval_expr(stream)
         block = stream.read_bracket_block()
         self.repcount_stack.append(0)
+        self.loop_depth += 1
         try:
             for i in range(1, int(count) + 1):
                 self.repcount_stack[-1] = i
-                self.exec_sequence(TokenStream(block))
+                try:
+                    self.exec_sequence(TokenStream(block))
+                except BreakLoop:
+                    break
+                except ContinueLoop:
+                    continue
         finally:
+            self.loop_depth -= 1
             self.repcount_stack.pop()
+
+    MAX_ENQUANTO = 200000  # protege contra ENQUANTO cuja condicao nunca muda
+
+    def cmd_enquanto(self, stream):
+        cond_tokens = []
+        while stream.peek() != '[':
+            if not stream.has_next():
+                raise LogoError("ENQUANTO precisa de um bloco [ ... ]")
+            cond_tokens.append(stream.next())
+        bloco = stream.read_bracket_block()
+        self.loop_depth += 1
+        try:
+            voltas = 0
+            while self.eval_condition(TokenStream(cond_tokens)):
+                voltas += 1
+                if voltas > self.MAX_ENQUANTO:
+                    raise LogoError(
+                        "ENQUANTO rodou muitas vezes sem parar - a condicao nunca "
+                        "fica falsa? (programa interrompido para nao travar)"
+                    )
+                try:
+                    self.exec_sequence(TokenStream(bloco))
+                except BreakLoop:
+                    break
+                except ContinueLoop:
+                    continue
+        finally:
+            self.loop_depth -= 1
+
+    def cmd_paracada(self, stream):
+        var_tok = stream.next()
+        if not var_tok.startswith(':'):
+            raise LogoError("PARACADA espera uma variavel, como :i")
+        nome = var_tok[1:].upper()
+        stream.expect_word('DE')
+        inicio = self.eval_expr(stream)
+        stream.expect_word('ATE')
+        fim = self.eval_expr(stream)
+        passo = 1
+        if stream.peek() is not None and stream.peek().upper() == 'PASSO':
+            stream.next()
+            passo = self.eval_expr(stream)
+        if passo == 0:
+            raise LogoError("PASSO nao pode ser zero")
+        bloco = stream.read_bracket_block()
+        self.scopes.append({nome: inicio})
+        self.loop_depth += 1
+        try:
+            valor = inicio
+            while (valor <= fim) if passo > 0 else (valor >= fim):
+                self.scopes[-1][nome] = valor
+                try:
+                    self.exec_sequence(TokenStream(bloco))
+                except BreakLoop:
+                    break
+                except ContinueLoop:
+                    pass
+                valor += passo
+        finally:
+            self.loop_depth -= 1
+            self.scopes.pop()
 
     def cmd_para(self, stream):
         nome = stream.next()
@@ -374,15 +511,22 @@ class Interpreter:
             corpo.append(tok)
         self.procs[nome.upper()] = (params, corpo)
 
-    def call_proc(self, nome, stream):
+    def run_proc(self, nome, stream):
+        """Chama um procedimento como comando OU como funcao dentro de uma
+        expressao; devolve o valor do DEVOLVA, ou None se ele nao devolveu nada."""
         params, corpo = self.procs[nome]
         args = [self.eval_expr(stream) for _ in params]
         self.scopes.append(dict(zip(params, args)))
+        self.proc_depth += 1
         try:
             self.exec_sequence(TokenStream(corpo))
+            return None
         except StopProc:
-            pass
+            return None
+        except ProcOutput as saida:
+            return saida.valor
         finally:
+            self.proc_depth -= 1
             self.scopes.pop()
 
     def cmd_se(self, stream):
@@ -418,6 +562,8 @@ class Interpreter:
             self.exec_sequence(stream)
         except StopProgram:
             pass
+        except (StopProc, ProcOutput, BreakLoop, ContinueLoop):
+            pass  # ja deveriam ter sido tratados antes; nunca deixa travar o programa
         except LogoError as e:
             print(f"Erro: {e}")
         finally:

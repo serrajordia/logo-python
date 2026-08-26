@@ -1,0 +1,35 @@
+; QUEBRA sai imediatamente do laco (REPITA/ENQUANTO/PARACADA) onde esta.
+; CONTINUA pula direto para a proxima volta do laco, sem rodar o resto
+; do bloco naquela volta.
+
+; CONTINUA: desenha uma linha tracejada (pula o desenho das partes pares)
+PARA LINHA_TRACEJADA :TAMANHO :PARTES
+  FACA "passo :TAMANHO / :PARTES
+  REPITA :PARTES [
+    SE (REPCOUNT % 2) = 0 [
+      LP
+      PF :passo
+      AP
+      CONTINUA
+    ]
+    COR "azul
+    PF :passo
+  ]
+FIM
+
+VAIPARA -150 100
+DEFINARUMO 0
+AP
+LINHA_TRACEJADA 300 20
+
+; QUEBRA: comeca um poligono de 10 lados, mas para na metade
+LP
+VAIPARA 0 0
+AP
+DEFINARUMO 0
+COR "vermelho
+REPITA 10 [
+  SE REPCOUNT > 6 [ QUEBRA ]
+  PF 30
+  PD 36
+]

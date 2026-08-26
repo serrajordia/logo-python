@@ -1,0 +1,17 @@
+; Brincando com COR, ESPESSURA e VELOCIDADE.
+
+VELOCIDADE 3
+ESPESSURA 4
+
+COR "laranja
+REPITA 4 [ PF 90 PD 90 ]
+
+LP
+PT 90
+PE 90
+PF 130
+PD 90
+AP
+
+COR "roxo
+REPITA 8 [ PF 40 PD 45 ]     ; octogono

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Logo em Python</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header id="toolbar">
+  <h1>🐢 Logo em Python</h1>
+  <div id="toolbar-buttons">
+    <button id="btn-executar" title="Roda o que estiver na caixa de comando">▶ Executar</button>
+    <button id="btn-limpar" title="Apaga o desenho e volta a tartaruga pro centro">🧹 Limpar</button>
+    <button id="btn-reiniciar" title="Recomeça do zero (apaga variáveis e procedimentos também)">🔄 Reiniciar</button>
+    <button id="btn-ajuda" title="Mostra/esconde a ajuda">❔ Ajuda</button>
+  </div>
+</header>
+
+<main id="app">
+
+  <section id="left-panel">
+
+    <div id="help-panel">
+      <div id="help-tabs">
+        <button class="tab-btn active" data-tab="comandos">Comandos</button>
+        <button class="tab-btn" data-tab="exemplos">Exemplos</button>
+        <button class="tab-btn" data-tab="trilhas">Trilhas</button>
+      </div>
+
+      <div class="tab-content active" id="tab-comandos">
+        <table class="cheatsheet">
+          <tr><th>Comando</th><th>O que faz</th></tr>
+          <tr><td><code>PF n</code> / <code>PT n</code></td><td>anda pra frente / pra trás</td></tr>
+          <tr><td><code>PD n</code> / <code>PE n</code></td><td>gira à direita / à esquerda (graus)</td></tr>
+          <tr><td><code>LP</code> / <code>AP</code></td><td>levanta / abaixa a caneta</td></tr>
+          <tr><td><code>COR "nome</code></td><td>muda a cor do traço</td></tr>
+          <tr><td><code>REPITA n [ ... ]</code></td><td>repete um bloco n vezes</td></tr>
+          <tr><td><code>ENQUANTO cond [ ... ]</code></td><td>repete enquanto for verdade</td></tr>
+          <tr><td><code>PARACADA :i DE a ATE b [ ... ]</code></td><td>repete com uma variável :i</td></tr>
+          <tr><td><code>QUEBRA</code> / <code>CONTINUA</code></td><td>sai do laço / pula pra próxima volta</td></tr>
+          <tr><td><code>SE cond [ ... ] [ ... ]</code></td><td>se/senão</td></tr>
+          <tr><td><code>PARA nome :a / FIM</code></td><td>define um procedimento</td></tr>
+          <tr><td><code>DEVOLVA valor</code></td><td>faz o procedimento devolver um valor (função)</td></tr>
+          <tr><td><code>FACA "nome valor</code></td><td>guarda um valor numa variável</td></tr>
+          <tr><td><code>MOSTRE valor</code></td><td>imprime um número ou texto</td></tr>
+          <tr><td><code>RAIZ n</code> / <code>PI</code></td><td>raiz quadrada / o número π</td></tr>
+        </table>
+        <p class="hint">Referência completa: <a href="../TUTORIAL.md" target="_blank">TUTORIAL.md</a></p>
+      </div>
+
+      <div class="tab-content" id="tab-exemplos">
+        <p class="hint">Clique num exemplo para carregar o código na caixa de comando.</p>
+        <div id="lista-exemplos"></div>
+      </div>
+
+      <div class="tab-content" id="tab-trilhas">
+        <p class="hint">As três trilhas de aprendizado, com lições e desafios:</p>
+        <ul class="trilhas-list">
+          <li><a href="https://github.com/serrajordia/logo-python/blob/main/trilha-1-basico.md" target="_blank">Trilha 1 — Básico</a></li>
+          <li><a href="https://github.com/serrajordia/logo-python/blob/main/trilha-2-intermediario.md" target="_blank">Trilha 2 — Intermediário</a></li>
+          <li><a href="https://github.com/serrajordia/logo-python/blob/main/trilha-3-avancado.md" target="_blank">Trilha 3 — Avançado</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div id="console" aria-live="polite"></div>
+
+    <div id="input-area">
+      <textarea id="entrada" rows="3" spellcheck="false"
+        placeholder="Digite um comando Logo, ex: REPITA 4 [ PF 100 PD 90 ]"></textarea>
+      <div class="input-hint">Enter roda o comando · Shift+Enter quebra linha (útil dentro de PARA/FIM)</div>
+    </div>
+
+  </section>
+
+  <section id="right-panel">
+    <canvas id="logo-canvas" width="850" height="650"></canvas>
+  </section>
+
+</main>
+
+<div id="loading-overlay">
+  <div id="loading-box">
+    <div class="spinner"></div>
+    <p id="loading-text">Carregando Python no navegador… (só demora na primeira vez)</p>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/pyodide/v314.0.6/full/pyodide.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

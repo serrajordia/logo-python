@@ -1,0 +1,17 @@
+; Triangulo, pentagono e hexagono, cada um desenhado "na mao" com REPITA
+; (ainda sem procedimentos - isso vem na trilha Intermediario).
+;
+; Repare no padrao: o angulo de giro e sempre 360 dividido pelo numero
+; de lados. Isso vale para QUALQUER poligono regular.
+
+COR "vermelho
+VAIPARA -220 0
+REPITA 3 [ PF 80  PD 360 / 3 ]     ; triangulo: 360/3 = 120
+
+COR "verde
+VAIPARA -60 0
+REPITA 5 [ PF 60  PD 360 / 5 ]     ; pentagono: 360/5 = 72
+
+COR "azul
+VAIPARA 120 0
+REPITA 6 [ PF 50  PD 360 / 6 ]     ; hexagono: 360/6 = 60

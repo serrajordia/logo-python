@@ -1,0 +1,30 @@
+; SE (condicional) deixa o programa "decidir". Aqui usamos varios SE
+; encadeados para classificar um triangulo pelos seus 3 lados - um
+; algoritmo classico de geometria.
+;
+; (o Logo aqui ainda nao tem "E"/"OU" para juntar duas condicoes, entao
+; usamos um SE dentro do outro no lugar disso.)
+
+PARA CLASSIFICA_TRIANGULO :A :B :C
+  SE :A = :B [
+    SE :B = :C [
+      MOSTRE [Equilatero: os 3 lados sao iguais]
+      SAIA
+    ]
+    MOSTRE [Isosceles: 2 lados iguais]
+    SAIA
+  ]
+  SE :B = :C [
+    MOSTRE [Isosceles: 2 lados iguais]
+    SAIA
+  ]
+  SE :A = :C [
+    MOSTRE [Isosceles: 2 lados iguais]
+    SAIA
+  ]
+  MOSTRE [Escaleno: os 3 lados sao diferentes]
+FIM
+
+CLASSIFICA_TRIANGULO 5 5 5
+CLASSIFICA_TRIANGULO 5 5 8
+CLASSIFICA_TRIANGULO 3 4 5

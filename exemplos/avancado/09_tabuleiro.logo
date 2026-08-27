@@ -1,0 +1,20 @@
+; Um tabuleiro de xadrez 8x8: dois PARACADA aninhados (linha e coluna) +
+; um SE que decide a cor usando o resto da divisao por 2 (%) - a mesma
+; ideia usada para saber se um numero e par ou impar.
+
+PARA QUADRADINHO :LADO
+  REPITA 4 [ PF :LADO PD 90 ]
+FIM
+
+RAPIDO
+FACA "lado 30
+PARACADA :linha DE 0 ATE 7 [
+  PARACADA :coluna DE 0 ATE 7 [
+    LP
+    VAIPARA (:coluna * :lado - 120) (:linha * :lado - 120)
+    AP
+    SE ((:linha + :coluna) % 2) = 0 [ COR "preto ] [ COR "branco ]
+    QUADRADINHO :lado
+  ]
+]
+NORMAL

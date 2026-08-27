@@ -1,0 +1,27 @@
+; Duas funcoes recursivas classicas (procedimentos que chamam a si
+; mesmos E devolvem um valor com DEVOLVA).
+;
+; Dica de sintaxe: quando uma conta combina DUAS chamadas de funcao,
+; coloque cada chamada entre parenteses - senao o Logo nao sabe onde
+; termina uma chamada e comeca a outra. Repare como usamos isso no
+; FIBONACCI, mas NAO precisamos no FATORIAL (so tem uma chamada).
+
+PARA FATORIAL :N
+  SE :N <= 1 [ DEVOLVA 1 ]
+  DEVOLVA :N * FATORIAL :N - 1
+FIM
+
+PARA FIBONACCI :N
+  SE :N <= 1 [ DEVOLVA :N ]
+  DEVOLVA (FIBONACCI :N - 1) + (FIBONACCI :N - 2)
+FIM
+
+MOSTRE [Fatoriais de 0 a 7:]
+PARACADA :i DE 0 ATE 7 [
+  MOSTRE FATORIAL :i
+]
+
+MOSTRE [Sequencia de Fibonacci, de 0 a 10:]
+PARACADA :i DE 0 ATE 10 [
+  MOSTRE FIBONACCI :i
+]

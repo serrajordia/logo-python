@@ -1,0 +1,10 @@
+; ENQUANTO repete um bloco enquanto uma condicao continuar verdadeira -
+; diferente do REPITA, aqui NAO sabemos de antemao quantas vezes vai
+; rodar; depende de quando :lado deixa de ser menor que 150.
+
+FACA "lado 10
+COR "verde
+ENQUANTO :lado < 150 [
+  REPITA 6 [ PF :lado PD 60 ]
+  FACA "lado :lado + 12
+]

@@ -13,7 +13,12 @@ Veja o TUTORIAL.md para uma introducao passo a passo.
 import math
 import re
 import sys
-import turtle
+
+# "turtle" (que depende do Tkinter) so e importado sob demanda, dentro de
+# Interpreter.__init__, e so quando screen/t nao sao fornecidos de fora.
+# Isso permite rodar este mesmo logo.py num ambiente sem Tkinter (ex.: a
+# versao web via Pyodide, que injeta seu proprio backend desenhando num
+# <canvas>) sem o import falhar antes mesmo de chegar la.
 
 
 # ---------------------------------------------------------------------------
@@ -163,16 +168,25 @@ SYNONYMS = {alias: key for key, aliases in _SYNONYMS.items() for alias in aliase
 # ---------------------------------------------------------------------------
 
 class Interpreter:
-    def __init__(self):
-        self.screen = turtle.Screen()
-        self.screen.title("Logo em Python")
-        self.screen.setup(width=850, height=650)
-        self.screen.colormode(255)
+    def __init__(self, screen=None, t=None):
+        # screen/t podem vir prontos de fora (ex.: a versao web, que desenha
+        # num <canvas> em vez de abrir uma janela do Tkinter). Sem eles, o
+        # comportamento de sempre (desktop) continua identico.
+        if screen is None or t is None:
+            import turtle
+        if screen is None:
+            screen = turtle.Screen()
+            screen.title("Logo em Python")
+            screen.setup(width=850, height=650)
+            screen.colormode(255)
+        self.screen = screen
         self._half_w, self._half_h = 425.0, 325.0  # usado por ZOOM
 
-        self.t = turtle.Turtle()
-        self.t.speed(6)
-        self.t.setheading(90)  # 0 graus aponta para cima, como no Logo classico
+        if t is None:
+            t = turtle.Turtle()
+            t.speed(6)
+            t.setheading(90)  # 0 graus aponta para cima, como no Logo classico
+        self.t = t
 
         self.procs = {}          # nome -> (params, corpo_de_tokens)
         self.scopes = [{}]       # pilha de escopos de variaveis; scopes[0] = global
@@ -414,7 +428,9 @@ class Interpreter:
         cor = CORES.get(nome.lower(), nome.lower())
         try:
             self.t.pencolor(cor)
-        except turtle.TurtleGraphicsError:
+        except Exception:
+            # o tipo exato da excecao depende do backend (Tkinter no desktop,
+            # algo proprio no navegador) - qualquer falha aqui vira erro amigavel
             raise LogoError(f"nao conheco a cor '{nome}'")
 
     def cmd_repita(self, stream):
@@ -575,6 +591,20 @@ class Interpreter:
 # Modo interativo (REPL) e execucao de arquivos
 # ---------------------------------------------------------------------------
 
+def is_buffer_complete(texto):
+    """True se `texto` nao tem PARA/REPITA/etc. pendurados esperando um FIM ou
+    um ']' de fechamento - ou seja, se ja da pra executar. Usado pelo REPL do
+    terminal e tambem pela versao web (para saber quando rodar o que foi
+    digitado x quando so adicionar uma linha nova e continuar esperando)."""
+    if not texto.strip():
+        return False
+    toks = tokenize(texto)
+    ups = [t.upper() for t in toks]
+    para_bal = ups.count('PARA') + ups.count('TO') - ups.count('FIM') - ups.count('END')
+    colch_bal = toks.count('[') - toks.count(']')
+    return para_bal <= 0 and colch_bal <= 0
+
+
 def run_repl(interp):
     print("=== Logo em Python - modo interativo ===")
     print("Digite comandos Logo e tecle Enter. Digite SAIR para encerrar.\n")
@@ -587,11 +617,7 @@ def run_repl(interp):
         if not buffer and line.strip().upper() in ('SAIR', 'EXIT', 'QUIT'):
             break
         buffer += line + "\n"
-        toks = tokenize(buffer)
-        ups = [t.upper() for t in toks]
-        para_bal = ups.count('PARA') + ups.count('TO') - ups.count('FIM') - ups.count('END')
-        colch_bal = toks.count('[') - toks.count(']')
-        if buffer.strip() and para_bal <= 0 and colch_bal <= 0:
+        if is_buffer_complete(buffer):
             interp.run_program(buffer)
             buffer = ""
     print("Ate logo!")

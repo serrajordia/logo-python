@@ -1,0 +1,6 @@
+; Trilha 1, Aula 1 - A tartaruga e os primeiros passos (veja trilha-1-basico.md)
+
+; sobe, vira a direita (canto de 90 graus) e anda de lado
+PF 100
+PD 90
+PF 100

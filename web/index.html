@@ -10,6 +10,13 @@
 
 <header id="toolbar">
   <h1>🐢 Logo em Python</h1>
+  <div id="speed-control" title="Velocidade da tartaruga (∞ = desenha tudo de uma vez)">
+    <label for="velocidade">🐢</label>
+    <input type="range" id="velocidade" min="1" max="11" step="1" value="6" aria-label="Velocidade da tartaruga">
+    <label for="velocidade">🐇</label>
+    <output id="velocidade-valor" for="velocidade">6</output>
+    <button id="btn-pular" title="Termina o desenho que está sendo animado, sem esperar">⏩ Pular</button>
+  </div>
   <div id="toolbar-buttons">
     <button id="btn-executar" title="Roda o que estiver na caixa de comando">▶ Executar</button>
     <button id="btn-limpar" title="Apaga o desenho e volta a tartaruga pro centro">🧹 Limpar</button>
@@ -56,7 +63,7 @@
       </div>
 
       <div class="tab-content" id="tab-trilhas">
-        <p class="hint">As três trilhas de aprendizado, com lições e desafios:</p>
+        <p class="hint">As três trilhas de aprendizado: 10 aulas de 20 minutos cada, com exercícios e respostas:</p>
         <ul class="trilhas-list">
           <li><a href="https://github.com/serrajordia/logo-python/blob/main/trilha-1-basico.md" target="_blank">Trilha 1 — Básico</a></li>
           <li><a href="https://github.com/serrajordia/logo-python/blob/main/trilha-2-intermediario.md" target="_blank">Trilha 2 — Intermediário</a></li>
@@ -89,6 +96,7 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/pyodide/v314.0.6/full/pyodide.js"></script>
+<script src="tartaruga.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

@@ -1,0 +1,30 @@
+; Trilha 1, Aula 10 - Projeto final: o meu desenho (veja trilha-1-basico.md)
+
+; paredes
+COR "marrom
+ESPESSURA 3
+REPITA 4 [ PF 100 PD 90 ]
+; telhado (um triangulo em cima do quadrado)
+LP
+PF 100
+PD 90
+AP
+PE 60
+COR "vermelho
+PF 100
+PD 120
+PF 100
+; porta
+COR "azul
+LP
+VAIPARA 35 0
+DEFINARUMO 0
+AP
+REPITA 2 [ PF 50 PD 90 PF 30 PD 90 ]
+; sol
+COR "dourado
+LP
+VAIPARA 170 170
+DEFINARUMO 0
+AP
+REPITA 36 [ PF 5 PD 10 ]

@@ -2,30 +2,41 @@
 Backend de desenho para a versao web do Logo em Python.
 
 Em vez de abrir uma janela do Tkinter (como o modulo `turtle` padrao),
-CanvasTurtle/CanvasScreen desenham num <canvas> HTML, usando a ponte
-JS do Pyodide. Implementam exatamente os mesmos metodos que logo.py
-chama em self.t / self.screen (a mesma lista que fake_turtle.py, usado
-nos testes automatizados, ja cobre) - por isso o interpretador
+CanvasTurtle/CanvasScreen implementam exatamente os mesmos metodos que
+logo.py chama em self.t / self.screen (a mesma lista que fake_turtle.py,
+usado nos testes automatizados, ja cobre) - por isso o interpretador
 (logo.py) roda sem nenhuma mudanca, tanto no desktop quanto aqui.
 
+Eles nao desenham nada diretamente: cada movimento vira uma operacao numa
+"fita" (lista), entregue ao JavaScript (web/tartaruga.js) quando o programa
+termina de rodar (screen.update()). La, a fita e tocada na velocidade
+escolhida no controle da pagina, com a tartaruga se movendo; na velocidade
+infinita tudo aparece de imediato. O formato das operacoes esta documentado
+no cabecalho de tartaruga.js.
+
 Diferencas conhecidas em relacao ao desktop:
-- o desenho aparece instantaneo (sem animacao passo a passo); por isso
-  VELOCIDADE nao tem efeito visivel aqui.
+- VELOCIDADE, RAPIDO e NORMAL escritos no codigo Logo sao ignorados aqui:
+  so o controle de velocidade da pagina manda (senao exemplos que comecam
+  com "VELOCIDADE 0" nunca mostrariam a animacao).
 - ZOOM usa uma transformacao CSS no proprio <canvas> (mais simples e
   ainda reescala tudo que ja foi desenhado, como o turtle real faz).
 """
 
 import math
 
+import js
 from js import document
+from pyodide.ffi import to_js
 
 
 class CanvasScreen:
     def __init__(self, canvas_id="logo-canvas"):
         self.canvas = document.getElementById(canvas_id)
-        self.ctx = self.canvas.getContext("2d")
         self._probe_ctx = document.createElement("canvas").getContext("2d")
-        self._tracing = True
+        self.fila = []  # operacoes ainda nao entregues ao JavaScript
+
+    def emitir(self, *op):
+        self.fila.append(op)
 
     # -- chamados por logo.py -----------------------------------------------
 
@@ -39,15 +50,18 @@ class CanvasScreen:
         pass  # o canvas ja aceita 0-255 diretamente em rgb(...)
 
     def tracer(self, n):
-        self._tracing = bool(n)
+        pass  # RAPIDO/NORMAL: ignorado na web (ver docstring do modulo)
 
     def update(self):
-        pass  # cada traco ja e desenhado na hora; nada para atualizar em lote
+        # entrega ao JavaScript tudo o que foi gravado desde a ultima vez
+        if self.fila:
+            fila, self.fila = self.fila, []
+            js.Tartaruga.enfileirar(to_js(fila))
 
     def setworldcoordinates(self, llx, lly, urx, ury):
         largura_mundo = urx - llx
         zoom = (self.canvas.width / largura_mundo) if largura_mundo else 1.0
-        self.canvas.style.transform = f"scale({zoom})"
+        self.emitir("z", zoom)
 
     def exitonclick(self):
         pass
@@ -58,8 +72,7 @@ class CanvasScreen:
     # -- uso interno --------------------------------------------------------
 
     def clear_canvas(self):
-        self.ctx.setTransform(1, 0, 0, 1, 0, 0)
-        self.ctx.clearRect(0, 0, self.canvas.width, self.canvas.height)
+        self.emitir("c")
 
     def cor_valida(self, cor):
         sentinela = "#010203"
@@ -89,20 +102,22 @@ class CanvasTurtle:
         self.forward(-n)
 
     def right(self, n):
-        self.heading_ = (self.heading_ - n) % 360
+        self.left(-n)
 
     def left(self, n):
         self.heading_ = (self.heading_ + n) % 360
+        if n:
+            self.screen.emitir("t", n)
 
     def goto(self, x, y):
         self._move_to(x, y)
 
     def setheading(self, n):
-        self.heading_ = n
+        self._girar_para(n)
 
     def home(self):
         self._move_to(0.0, 0.0)
-        self.heading_ = 0.0  # mesmo comportamento do modulo turtle real
+        self._girar_para(0.0)  # mesmo comportamento do modulo turtle real
 
     def position(self):
         return (self.x, self.y)
@@ -130,35 +145,30 @@ class CanvasTurtle:
             self.color = f"rgb({int(r)},{int(g)},{int(b)})"
 
     def speed(self, n=None):
-        pass  # sem animacao passo a passo na web (ver docstring do modulo)
+        pass  # VELOCIDADE: ignorado na web (ver docstring do modulo)
 
     def showturtle(self):
-        pass
+        self.screen.emitir("s", 1)
 
     def hideturtle(self):
-        pass
+        self.screen.emitir("s", 0)
 
     def clear(self):
         self.screen.clear_canvas()
 
     # -- uso interno --------------------------------------------------------
 
-    def _to_canvas(self, x, y):
-        cw, ch = self.screen.canvas.width, self.screen.canvas.height
-        return (cw / 2 + x, ch / 2 - y)
+    def _girar_para(self, n):
+        # gira pelo caminho mais curto ate a direcao n (graus, 0 = leste)
+        delta = (n - self.heading_ + 180) % 360 - 180
+        self.heading_ = n
+        if delta:
+            self.screen.emitir("t", delta)
 
     def _move_to(self, nx, ny):
-        if self.pen_down:
-            x1, y1 = self._to_canvas(self.x, self.y)
-            x2, y2 = self._to_canvas(nx, ny)
-            ctx = self.screen.ctx
-            ctx.strokeStyle = self.color
-            ctx.lineWidth = self.width
-            ctx.lineCap = "round"
-            ctx.beginPath()
-            ctx.moveTo(x1, y1)
-            ctx.lineTo(x2, y2)
-            ctx.stroke()
+        self.screen.emitir(
+            "m", self.x, self.y, nx, ny, 1 if self.pen_down else 0, self.color, self.width
+        )
         self.x, self.y = nx, ny
 
 

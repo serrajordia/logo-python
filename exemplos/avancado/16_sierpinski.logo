@@ -1,0 +1,20 @@
+; Trilha 3, Aula 9 - Fractais: Koch, Sierpinski e a curva C (veja trilha-3-avancado.md)
+
+PARA SIERPINSKI :TAM :NIVEL
+  SE :NIVEL = 0 [
+    REPITA 3 [ PF :TAM PE 120 ]
+    SAIA
+  ]
+  REPITA 3 [
+    SIERPINSKI (:TAM / 2) (:NIVEL - 1)
+    PF :TAM
+    PE 120
+  ]
+FIM
+
+COR "roxo
+LP
+VAIPARA -150 -120
+DEFINARUMO 90
+AP
+SIERPINSKI 300 4

@@ -1,0 +1,21 @@
+; Trilha 1, Aula 9 - O mapa da tartaruga: coordenadas (veja trilha-1-basico.md)
+
+; eixos
+COR "cinza
+LP
+VAIPARA -200 0
+AP
+VAIPARA 200 0
+LP
+VAIPARA 0 -150
+AP
+VAIPARA 0 150
+; quadrado ligando pontos
+COR "azul
+LP
+VAIPARA 0 0
+AP
+VAIPARA 100 0
+VAIPARA 100 100
+VAIPARA 0 100
+VAIPARA 0 0

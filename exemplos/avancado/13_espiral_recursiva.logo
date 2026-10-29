@@ -1,0 +1,11 @@
+; Trilha 3, Aula 6 - Recursão: um procedimento que chama a si mesmo (veja trilha-3-avancado.md)
+
+PARA ESPIRAL :LADO
+  SE :LADO > 150 [ SAIA ]
+  PF :LADO
+  PD 90
+  ESPIRAL :LADO + 5
+FIM
+
+COR "azul
+ESPIRAL 5

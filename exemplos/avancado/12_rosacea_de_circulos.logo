@@ -1,0 +1,8 @@
+; Trilha 3, Aula 3 - Círculos e o número π (veja trilha-3-avancado.md)
+
+PARA CIRCULO :RAIO
+  REPITA 360 [ PF 2 * PI * :RAIO / 360 PD 1 ]
+FIM
+
+COR "azul
+REPITA 12 [ CIRCULO 60 PD 30 ]

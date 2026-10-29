@@ -1,0 +1,16 @@
+; Trilha 3, Aula 2 - Pitágoras: a função da distância (veja trilha-3-avancado.md)
+
+PARA HIPOTENUSA :A :B
+  DEVOLVA RAIZ (:A * :A + :B * :B)
+FIM
+
+FACA "a 90
+FACA "b 120
+MOSTRE :a * :a + :b * :b                         ; soma dos quadrados dos catetos
+MOSTRE HIPOTENUSA :a :b                           ; a hipotenusa: 150
+MOSTRE (HIPOTENUSA :a :b) * (HIPOTENUSA :a :b)    ; o quadrado dela: igual a soma!
+
+; desenho: catetos nos eixos, hipotenusa fechando o triangulo
+VAIPARA :a 0
+VAIPARA :a :b
+VAIPARA 0 0

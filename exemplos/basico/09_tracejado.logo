@@ -1,0 +1,5 @@
+; Trilha 1, Aula 5 - Caneta, cor e espessura (veja trilha-1-basico.md)
+
+COR "vermelho
+ESPESSURA 3
+REPITA 12 [ PF 10 LP PF 10 AP ]

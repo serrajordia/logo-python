@@ -1,0 +1,22 @@
+; Trilha 3, Aula 1 - Funções: procedimentos que devolvem um valor (veja trilha-3-avancado.md)
+
+PARA DOBRO :X
+  DEVOLVA :X * 2
+FIM
+
+PARA MEDIA :A :B
+  DEVOLVA (:A + :B) / 2
+FIM
+
+PARA AREA_RETANGULO :BASE :ALTURA
+  DEVOLVA :BASE * :ALTURA
+FIM
+
+MOSTRE DOBRO 21
+MOSTRE MEDIA 8 13
+MOSTRE AREA_RETANGULO 12 5
+
+; usando funcoes dentro de comandos de desenho
+PF DOBRO 40
+PD 90
+PF MEDIA 60 100

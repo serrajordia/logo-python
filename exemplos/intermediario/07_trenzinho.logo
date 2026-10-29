@@ -1,0 +1,15 @@
+; Trilha 2, Aula 1 - Procedimentos: crie os seus próprios comandos (veja trilha-2-intermediario.md)
+
+PARA QUADRADO
+  REPITA 4 [ PF 50 PD 90 ]
+FIM
+
+PARA PULA
+  LP
+  PD 90
+  PF 70
+  PE 90
+  AP
+FIM
+
+REPITA 4 [ QUADRADO PULA ]

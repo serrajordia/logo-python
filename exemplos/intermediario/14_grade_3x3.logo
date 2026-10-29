@@ -1,0 +1,14 @@
+; Trilha 2, Aula 8 - Laços dentro de laços: grades e tabelas (veja trilha-2-intermediario.md)
+
+PARA QUADRADINHO :LADO
+  REPITA 4 [ PF :LADO PD 90 ]
+FIM
+
+PARACADA :linha DE 0 ATE 2 [
+  PARACADA :coluna DE 0 ATE 2 [
+    LP
+    VAIPARA (:coluna * 40 - 60) (:linha * 40 - 60)
+    AP
+    QUADRADINHO 30
+  ]
+]

@@ -5,15 +5,24 @@
 const EXEMPLOS = {
   "basico": [
     "01_quadrado", "02_poligonos_diretos", "03_espiral", "04_cores",
+    "05_primeiros_passos", "06_letra_z", "07_retangulo", "08_pentagono",
+    "09_tracejado", "10_rosacea_de_quadrados", "11_espiral_quadrada",
+    "12_tabuada_barras", "13_eixos_e_quadrado", "14_casa_e_sol",
   ],
   "intermediario": [
     "01_poligono_funcao", "02_estrela", "03_casa", "04_tabuada_grafico",
-    "05_paracada_grade", "06_condicionais",
+    "05_paracada_grade", "06_condicionais", "07_trenzinho",
+    "08_quadrados_crescentes", "09_quadrados_variavel", "10_casa_planejada",
+    "11_estrelas_com_salto", "12_par_ou_impar", "13_soma_acumulada",
+    "14_grade_3x3", "15_tabuada_comparada", "16_cidade",
   ],
   "avancado": [
     "01_arvore_recursiva", "02_circulo_pi", "03_circulos_concentricos",
     "04_pitagoras", "05_fatorial_fibonacci", "06_quebra_continua",
     "07_enquanto_crescente", "08_floco_de_neve", "09_tabuleiro",
+    "10_funcoes_matematicas", "11_hipotenusa", "12_rosacea_de_circulos",
+    "13_espiral_recursiva", "14_arvore_com_angulo", "15_espiral_aurea",
+    "16_sierpinski", "17_grafico_de_funcao",
   ],
 };
 
@@ -99,10 +108,21 @@ function rodarEntradaAtual() {
 }
 
 function limparDesenho() {
+  Tartaruga.pular();
   interp.run_program("LP OP LT AP");
 }
 
+// slider: 1..10 = velocidades, 11 = infinita
+const velocidadeEl = document.getElementById("velocidade");
+const velocidadeValorEl = document.getElementById("velocidade-valor");
+
+function mostrarNivel(n) {
+  velocidadeEl.value = n;
+  velocidadeValorEl.textContent = n >= Tartaruga.NIVEL_INFINITO ? "∞" : n;
+}
+
 function reiniciarTudo() {
+  Tartaruga.reiniciar();
   pyodide.runPython("interp = turtle_canvas.novo_interpretador('logo-canvas')");
   interp = pyodide.globals.get("interp");
   buffer = "";
@@ -117,6 +137,13 @@ async function iniciar() {
   document.getElementById("btn-executar").addEventListener("click", rodarEntradaAtual);
   document.getElementById("btn-limpar").addEventListener("click", limparDesenho);
   document.getElementById("btn-reiniciar").addEventListener("click", reiniciarTudo);
+  document.getElementById("btn-pular").addEventListener("click", () => Tartaruga.pular());
+  velocidadeEl.addEventListener("input", () => {
+    const n = Number(velocidadeEl.value);
+    Tartaruga.definirNivel(n);
+    mostrarNivel(n);
+  });
+  mostrarNivel(Tartaruga.nivel());
   document.getElementById("btn-ajuda").addEventListener("click", () => {
     document.getElementById("help-panel").classList.toggle("escondido");
   });
@@ -138,8 +165,9 @@ async function iniciar() {
     });
 
     const [logoSrc, canvasSrc] = await Promise.all([
-      fetch("../logo.py").then((r) => r.text()),
-      fetch("turtle_canvas.py").then((r) => r.text()),
+      // no-cache: sempre revalida, para nao rodar uma versao antiga do codigo
+      fetch("../logo.py", { cache: "no-cache" }).then((r) => r.text()),
+      fetch("turtle_canvas.py", { cache: "no-cache" }).then((r) => r.text()),
     ]);
     pyodide.FS.writeFile("logo.py", logoSrc);
     pyodide.FS.writeFile("turtle_canvas.py", canvasSrc);

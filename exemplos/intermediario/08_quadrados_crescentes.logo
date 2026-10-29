@@ -1,0 +1,7 @@
+; Trilha 2, Aula 2 - Parâmetros: um comando para qualquer tamanho (veja trilha-2-intermediario.md)
+
+PARA QUADRADO :LADO
+  REPITA 4 [ PF :LADO PD 90 ]
+FIM
+
+REPITA 8 [ QUADRADO REPCOUNT * 10 ]

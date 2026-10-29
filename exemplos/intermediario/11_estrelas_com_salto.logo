@@ -1,0 +1,10 @@
+; Trilha 2, Aula 5 - Estrelas e mais ângulos (veja trilha-2-intermediario.md)
+
+PARA ESTRELAS :PONTAS :SALTO :TAMANHO
+  REPITA :PONTAS [ PF :TAMANHO PD 360 * :SALTO / :PONTAS ]
+FIM
+
+COR "roxo
+ESTRELAS 7 2 120
+COR "azul
+ESTRELAS 7 3 120

@@ -1,0 +1,4 @@
+; Trilha 1, Aula 3 - REPITA: não repita você mesmo (veja trilha-1-basico.md)
+
+; 2 voltas de (lado comprido + canto + lado curto + canto)
+REPITA 2 [ PF 120 PD 90 PF 60 PD 90 ]

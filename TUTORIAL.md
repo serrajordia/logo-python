@@ -6,13 +6,21 @@ desenha na tela, e no caminho aprende geometria, ângulos, algoritmos e
 programação.
 
 Este arquivo cobre só a **instalação** e serve de **referência rápida de
-comandos**. Para aprender passo a passo, siga as trilhas:
+comandos**. Para aprender passo a passo, siga as trilhas (cada uma tem
+10 aulas de 20 minutos):
 
-1. **[Trilha 1 - Básico](trilha-1-basico.md)** - movimento, ângulos, `REPITA`.
+1. **[Trilha 1 - Básico](trilha-1-basico.md)** - movimento, ângulos, `REPITA`,
+   cores, coordenadas.
 2. **[Trilha 2 - Intermediário](trilha-2-intermediario.md)** - procedimentos,
-   variáveis, `SE`, `PARACADA`, planejamento.
-3. **[Trilha 3 - Avançado](trilha-3-avancado.md)** - recursão, funções
-   (`DEVOLVA`), `ENQUANTO`, `QUEBRA`/`CONTINUA`, fractais.
+   variáveis, `SE`, `PARACADA`, planejamento, gráficos de barras.
+3. **[Trilha 3 - Avançado](trilha-3-avancado.md)** - funções (`DEVOLVA`),
+   Pitágoras, círculos, `ENQUANTO`, `QUEBRA`/`CONTINUA`, recursão, fractais.
+
+> **Sem instalar nada:** a [versão web](https://serrajordia.github.io/logo-python/web/)
+> roda no navegador e anima a tartaruga. O controle 🐢—🐇 da página ajusta
+> a velocidade (de 1 a 10, ou **∞** para desenhar tudo de uma vez) e o botão
+> **⏩ Pular** termina o desenho em andamento. Na web, os comandos
+> `VELOCIDADE`, `RAPIDO` e `NORMAL` são ignorados: só esse controle manda.
 
 ## 1. Preparando o computador
 
@@ -65,8 +73,8 @@ No modo interativo, digite `SAIR` para encerrar.
 | `DEFINARUMO n` | `SETHEADING` | aponta para a direção n (0 = cima) |
 | `COR "nome` ou `COR r g b` | `SETCOLOR` | muda a cor do traço |
 | `ESPESSURA n` | `PENSIZE` | muda a grossura do traço |
-| `VELOCIDADE n` | `SPEED` | 0 (instantâneo) a 10 (rápido) |
-| `RAPIDO` | `TURBO` | desliga a atualização da tela a cada passo (desenhos pesados ficam quase instantâneos) |
+| `VELOCIDADE n` | `SPEED` | 0 (instantâneo) a 10 (rápido); só no computador, na web use o controle da página |
+| `RAPIDO` | `TURBO` | desliga a atualização da tela a cada passo (desenhos pesados ficam quase instantâneos); só no computador |
 | `NORMAL` | | volta a mostrar o desenho sendo feito passo a passo |
 | `ZOOM n` | | aproxima (n > 1) ou afasta (0 < n < 1) a visão da tela; `ZOOM 1` volta ao normal |
 | `REPITA n [ ... ]` | `REPEAT` | repete o bloco n vezes (trilha 1) |

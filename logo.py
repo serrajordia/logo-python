@@ -329,6 +329,7 @@ class Interpreter:
             self.t.hideturtle()
         elif up == 'OP':
             self.t.home()
+            self.t.setheading(90)  # home() do turtle deixa olhando para a direita; no Logo e para cima
         elif up in ('VELOCIDADE', 'SPEED'):
             self.t.speed(self.eval_expr(stream))
         elif up in ('RAPIDO', 'TURBO'):
@@ -582,6 +583,9 @@ class Interpreter:
             pass  # ja deveriam ter sido tratados antes; nunca deixa travar o programa
         except LogoError as e:
             print(f"Erro: {e}")
+        except RecursionError:
+            print("Erro: um procedimento chamou a si mesmo vezes demais - "
+                  "faltou a condicao de parada? (programa interrompido)")
         finally:
             # garante que o desenho aparece mesmo se RAPIDO ficou ligado
             self.screen.update()

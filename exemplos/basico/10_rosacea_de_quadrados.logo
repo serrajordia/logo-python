@@ -1,0 +1,7 @@
+; Trilha 1, Aula 6 - Laço dentro de laço: flores e rosáceas (veja trilha-1-basico.md)
+
+COR "roxo
+REPITA 36 [
+  REPITA 4 [ PF 80 PD 90 ]
+  PD 10
+]

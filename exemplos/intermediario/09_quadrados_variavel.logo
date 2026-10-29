@@ -1,0 +1,12 @@
+; Trilha 2, Aula 3 - Variáveis: guardando valores com FACA (veja trilha-2-intermediario.md)
+
+PARA QUADRADO :LADO
+  REPITA 4 [ PF :LADO PD 90 ]
+FIM
+
+FACA "lado 10
+REPITA 8 [
+  QUADRADO :lado
+  FACA "lado :lado + 10
+]
+MOSTRE :lado

@@ -1,0 +1,24 @@
+; Trilha 2, Aula 4 - Planejamento: quebrando um desenho complicado (veja trilha-2-intermediario.md)
+
+PARA QUADRADO :LADO
+  REPITA 4 [ PF :LADO PD 90 ]
+FIM
+
+PARA TELHADO :LADO
+  PD 90                          ; vira para a direita (ao longo do teto)
+  REPITA 3 [ PF :LADO PE 120 ]   ; triangulo para cima
+  PE 90
+FIM
+
+PARA CASA :LADO
+  QUADRADO :LADO
+  LP
+  PF :LADO                       ; sobe ate o canto de cima
+  AP
+  TELHADO :LADO
+  LP
+  PT :LADO                       ; volta ao ponto de partida
+  AP
+FIM
+
+CASA 100

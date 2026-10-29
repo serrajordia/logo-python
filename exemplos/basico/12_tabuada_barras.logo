@@ -1,0 +1,12 @@
+; Trilha 1, Aula 8 - Matemática com a tartaruga: MOSTRE e a tabuada (veja trilha-1-basico.md)
+
+; tabuada do 4, escrita e desenhada
+COR "verde
+REPITA 10 [
+  MOSTRE REPCOUNT * 4
+  PF REPCOUNT * 4 * 5
+  PT REPCOUNT * 4 * 5
+  PD 90
+  PF 20
+  PE 90
+]

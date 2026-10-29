@@ -1,0 +1,29 @@
+; Trilha 3, Aula 10 - Projeto final: gráficos e tabuleiros (veja trilha-3-avancado.md)
+
+PARA F :X
+  DEVOLVA :X * :X / 100
+FIM
+
+PARA EIXOS
+  COR "cinza
+  LP
+  VAIPARA -200 0
+  AP
+  VAIPARA 200 0
+  LP
+  VAIPARA 0 -50
+  AP
+  VAIPARA 0 250
+FIM
+
+PARA PLOTA
+  COR "azul
+  ESPESSURA 2
+  LP
+  VAIPARA -150 (F -150)
+  AP
+  PARACADA :x DE -150 ATE 150 PASSO 5 [ VAIPARA :x (F :x) ]
+FIM
+
+EIXOS
+PLOTA

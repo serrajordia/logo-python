@@ -1,0 +1,9 @@
+; Trilha 1, Aula 2 - Girando: o mundo dos ângulos (veja trilha-1-basico.md)
+
+; a barra de cima, a diagonal, a barra de baixo
+PD 90
+PF 60
+PD 135
+PF 85
+PE 135
+PF 60

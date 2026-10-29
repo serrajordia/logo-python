@@ -1,0 +1,4 @@
+; Trilha 1, Aula 7 - REPCOUNT: contando as voltas (veja trilha-1-basico.md)
+
+COR "azul
+REPITA 40 [ PF REPCOUNT * 5 PD 90 ]

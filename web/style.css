@@ -39,6 +39,28 @@ html, body {
   white-space: nowrap;
 }
 
+#speed-control {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-left: auto;
+}
+
+#speed-control input[type="range"] { width: 140px; accent-color: var(--azul); }
+#speed-control output { min-width: 1.6rem; font-weight: 600; text-align: center; }
+
+#speed-control button {
+  border: 1px solid var(--borda);
+  background: var(--painel);
+  color: var(--texto);
+  padding: 0.35rem 0.6rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+#speed-control button:hover { background: #eef2ff; border-color: var(--azul); }
+
 #toolbar-buttons { display: flex; gap: 0.5rem; flex-wrap: wrap; }
 
 #toolbar-buttons button {

@@ -1,0 +1,9 @@
+; Trilha 2, Aula 6 - SE: o programa decide (veja trilha-2-intermediario.md)
+
+PARA PAR_OU_IMPAR :N
+  SE (:N % 2) = 0 [ MOSTRE [par] ] [ MOSTRE [impar] ]
+FIM
+
+PAR_OU_IMPAR 7
+PAR_OU_IMPAR 10
+PAR_OU_IMPAR 0

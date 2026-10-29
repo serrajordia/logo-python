@@ -1,0 +1,51 @@
+; Trilha 2, Aula 10 - Projeto final: a minha cidade (veja trilha-2-intermediario.md)
+
+PARA QUADRADO :LADO
+  REPITA 4 [ PF :LADO PD 90 ]
+FIM
+
+PARA PREDIO :X :LARGURA :ANDARES
+  LP
+  VAIPARA :X -100
+  DEFINARUMO 0
+  AP
+  REPITA 2 [ PF :ANDARES * 30 PD 90 PF :LARGURA PD 90 ]
+  PARACADA :andar DE 1 ATE :ANDARES [
+    PARACADA :j DE 1 ATE :LARGURA / 30 [
+      LP
+      VAIPARA (:X + :j * 30 - 20) (-100 + :andar * 30 - 22)
+      DEFINARUMO 0
+      AP
+      QUADRADO 10
+    ]
+  ]
+FIM
+
+PARA SOL
+  LP
+  VAIPARA 150 120
+  DEFINARUMO 270
+  AP
+  REPITA 36 [ PF 4 PD 10 ]
+FIM
+
+PARA CHAO
+  LP
+  VAIPARA -250 -100
+  DEFINARUMO 90
+  AP
+  PF 500
+FIM
+
+COR "preto
+CHAO
+COR "azul
+PREDIO -200 60 3
+COR "vermelho
+PREDIO -120 90 5
+COR "verde
+PREDIO -10 60 4
+COR "roxo
+PREDIO 70 60 2
+COR "dourado
+SOL

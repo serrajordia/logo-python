@@ -1,0 +1,7 @@
+; Trilha 2, Aula 7 - PARACADA: contando com uma variável (veja trilha-2-intermediario.md)
+
+FACA "soma 0
+PARACADA :i DE 1 ATE 10 [
+  FACA "soma :soma + :i
+  MOSTRE :soma
+]

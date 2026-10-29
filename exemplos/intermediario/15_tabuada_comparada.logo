@@ -1,0 +1,27 @@
+; Trilha 2, Aula 9 - Gráficos de barras: desenhando números (veja trilha-2-intermediario.md)
+
+PARA BARRA :ALTURA
+  PF :ALTURA
+  PT :ALTURA
+  PD 90
+  PF 20
+  PE 90
+FIM
+
+PARA TABUADA :FATOR :X
+  LP
+  VAIPARA :X -120
+  DEFINARUMO 0
+  AP
+  ESPESSURA 8
+  REPITA 10 [
+    MOSTRE REPCOUNT * :FATOR
+    BARRA REPCOUNT * :FATOR * 3
+  ]
+  ESPESSURA 1
+FIM
+
+COR "azul
+TABUADA 3 -200
+COR "vermelho
+TABUADA 6 20

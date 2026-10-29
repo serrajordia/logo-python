@@ -1,0 +1,4 @@
+; Trilha 1, Aula 4 - Polígonos: a regra dos 360 graus (veja trilha-1-basico.md)
+
+; 5 lados, giro de 360 / 5 = 72 graus
+REPITA 5 [ PF 80 PD 360 / 5 ]

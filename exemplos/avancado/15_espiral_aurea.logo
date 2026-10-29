@@ -1,0 +1,16 @@
+; Trilha 3, Aula 8 - Recursão que devolve valor: fatorial, Fibonacci e MDC (veja trilha-3-avancado.md)
+
+PARA FIBONACCI :N
+  SE :N <= 1 [ DEVOLVA :N ]
+  DEVOLVA (FIBONACCI :N - 1) + (FIBONACCI :N - 2)
+FIM
+
+PARA ARCO :RAIO :GRAUS
+  REPITA :GRAUS [ PF 2 * PI * :RAIO / 360 PD 1 ]
+FIM
+
+COR "dourado
+ESPESSURA 2
+PARACADA :i DE 1 ATE 10 [
+  ARCO (FIBONACCI :i) * 3 90
+]

@@ -1,0 +1,15 @@
+; Trilha 3, Aula 7 - Recursão com dois ramos: a árvore (veja trilha-3-avancado.md)
+
+PARA ARVORE :TAMANHO :ANGULO
+  SE :TAMANHO < 10 [ SAIA ]
+  PF :TAMANHO
+  PD :ANGULO
+  ARVORE :TAMANHO * 0.7 :ANGULO
+  PE :ANGULO * 2
+  ARVORE :TAMANHO * 0.7 :ANGULO
+  PD :ANGULO
+  PT :TAMANHO
+FIM
+
+COR "marrom
+ARVORE 100 25
